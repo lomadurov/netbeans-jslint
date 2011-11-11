@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE type PUBLIC
+          "-//NetBeans//DTD annotation type 1.0//EN"
+          "http://www.netbeans.org/dtds/annotation-type-1_0.dtd">
+<type name="org-lomatek-jslint-jslinterrorannotation"
+      description_key="JSLintErrorLabel"
+      localizing_bundle="org.lomatek.jslint.resources.Bundle"
+      visible="true"
+      glyph="nbresloc:/org/lomatek/jslint/resources/JSLintError.png"
+      highlight="#FF5555"
+      type="line"
+      severity="error"/>

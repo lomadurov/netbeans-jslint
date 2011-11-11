@@ -14,6 +14,8 @@ import org.openide.awt.ActionReferences;
 import org.openide.awt.ActionID;
 import org.openide.util.NbBundle.Messages;
 
+import org.openide.util.RequestProcessor;
+
 @ActionID(category = "Build",
 id = "org.lomatek.jslint.JSLintSample")
 @ActionRegistration(displayName = "#CTL_JSLintSample")
@@ -22,6 +24,8 @@ id = "org.lomatek.jslint.JSLintSample")
 })
 @Messages("CTL_JSLintSample=JSLintSample")
 public final class JSLintSample implements ActionListener {
+    
+    static RequestProcessor processor = null;
 
     private final DataObject context;
 
@@ -31,5 +35,9 @@ public final class JSLintSample implements ActionListener {
 
     public void actionPerformed(ActionEvent ev) {
 	// TODO use context
+	if (processor == null) {
+            processor = new RequestProcessor("TidyErrorCheck", 1, true);
+        }
+        processor.post(new JSLintRunnable(context, "-e"));
     }
 }

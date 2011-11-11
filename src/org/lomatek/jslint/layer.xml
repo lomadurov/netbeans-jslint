@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
-    <folder name="csl-hints">
-	<folder name="text">
-	    <folder name="javascript">
-		<folder name="hints">
-		    <folder name="general">
-			<attr name="position" intvalue="100"/>
-			<attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.javascript.hints.Bundle"/>
-		    </folder>    
-		</folder>    
-	    </folder>
-	</folder>
-    </folder>    
+    <folder name="Editors">
+        <folder name="AnnotationTypes">
+            <!--file name="org-lomatek-jslint-resources-JSLintErrorAnnotation.xml" url="JSLintErrorAnnotation.xml"/-->
+	    <file name="org-lomatek-jslint-JSLintErrorAnnotation.xml" url="JSLintErrorAnnotation.xml"/>
+        </folder>
+    </folder>
 </filesystem>

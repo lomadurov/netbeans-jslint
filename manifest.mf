@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.lomatek.jslint
+OpenIDE-Module-Layer: org/lomatek/jslint/layer.xml
+OpenIDE-Module-Localizing-Bundle: org/lomatek/jslint/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

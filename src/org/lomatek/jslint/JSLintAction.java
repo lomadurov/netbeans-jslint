@@ -127,13 +127,16 @@ public final class JSLintAction implements ActionListener {
 	    /**
 	     * INIT CONTEXT
 	     */
-	    jscontext = Context.enter();
-	    jscontext.setLanguageVersion(Context.VERSION_1_6);
-	    scope = jscontext.initStandardObjects();
+	    if (null == jscontext) {
+		jscontext = Context.enter();
+		jscontext.setLanguageVersion(Context.VERSION_1_6);
+		scope = jscontext.initStandardObjects();
+
+		Reader reader = new BufferedReader(new InputStreamReader(getClass().getClassLoader()
+		    .getResourceAsStream("org/lomatek/jslint/resources/jslint.js"), Charset.forName("UTF-8")));
+		jscontext.evaluateReader(scope, reader, "JSLint", 1, null);
+	    }
 	    
-	    Reader reader = new BufferedReader(new InputStreamReader(getClass().getClassLoader()
-                .getResourceAsStream("org/lomatek/jslint/resources/jslint.js"), Charset.forName("UTF-8")));
-	    jscontext.evaluateReader(scope, reader, "JSLint", 1, null);
 	    
 	    String options = "/*jslint maxerr: 50 */";
 	    scope.put("contents", scope, mydoc.getText(0, mydoc.getLength()));

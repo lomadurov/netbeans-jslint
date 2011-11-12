@@ -7,6 +7,9 @@
       localizing_bundle="org.lomatek.jslint.resources.Bundle"
       visible="true"
       glyph="nbresloc:/org/lomatek/jslint/resources/JSLintError.png"
-      highlight="#FF5555"
-      type="line"
+      priority="50"
+      type="linepart"
+      browseable="true"
+      custom_sidebar_color='0xFF8FD5'
+      waveunderline="#c0c000"
       severity="error"/>

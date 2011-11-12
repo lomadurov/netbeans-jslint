@@ -79,9 +79,13 @@ public class JSLintAnnotation extends Annotation {
 	
         try {
             final Line line = lc.getLineSet().getOriginal(lineNumber-1);
+	    Line.Part partLine = null; //lc.getLineSet().getOriginal(lineNumber -1 );
+	    partLine = line.createPart(columnNumber-1, 1);
+	    //final Line.Part w = lc.getLineSet().
+	    
             final JSLintAnnotation annotation = JSLintAnnotation.create(severity, columnNumber, reason);
 
-            annotation.attach(line);
+            annotation.attach(partLine);
             line.addPropertyChangeListener(new PropertyChangeListener() {
 
                 public void propertyChange(PropertyChangeEvent ev) {

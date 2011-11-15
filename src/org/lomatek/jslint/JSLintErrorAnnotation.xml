@@ -11,5 +11,5 @@
       type="linepart"
       browseable="true"
       custom_sidebar_color='0xFF8FD5'
-      waveunderline="#c0c000"
+      waveunderline="#FF0000"
       severity="error"/>

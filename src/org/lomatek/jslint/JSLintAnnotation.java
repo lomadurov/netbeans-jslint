@@ -66,7 +66,7 @@ public class JSLintAnnotation extends Annotation {
         return reason + " (" + "Column: " + column + ")";
     }
     /** Create an annotation for a line from match string*/
-    public static void createAnnotation(final LineCookie lc, final String reason, final int lineNumber, final int columnNumber/*, final Matcher matcher*/)
+    public static void createAnnotation(final Line.Part partLine, final String reason, final int lineNumber, final int columnNumber/*, final Matcher matcher*/)
             throws IndexOutOfBoundsException, NumberFormatException {
         
 	/*String lineNumberString = matcher.group(1);
@@ -78,21 +78,21 @@ public class JSLintAnnotation extends Annotation {
 	String severity = "Err";
 	
         try {
-            final Line line = lc.getLineSet().getOriginal(lineNumber-1);
+            /*final Line line = lc.getLineSet().getOriginal(lineNumber-1);
 	    Line.Part partLine = null; //lc.getLineSet().getOriginal(lineNumber -1 );
-	    partLine = line.createPart(columnNumber-1, 1);
+	    partLine = line.createPart(columnNumber-1, 1);*/
 	    //final Line.Part w = lc.getLineSet().
 	    
             final JSLintAnnotation annotation = JSLintAnnotation.create(severity, columnNumber, reason);
 
             annotation.attach(partLine);
-            line.addPropertyChangeListener(new PropertyChangeListener() {
+            partLine.addPropertyChangeListener(new PropertyChangeListener() {
 
                 public void propertyChange(PropertyChangeEvent ev) {
                     String type = ev.getPropertyName();
                     if (type == null || type.equals(Annotatable.PROP_TEXT)) {
                         // User edited the line, assume error should be cleared.
-                        line.removePropertyChangeListener(this);
+                        partLine.removePropertyChangeListener(this);
                         annotation.detach();
                         JSLintAnnotation.remove(annotation);
                     }

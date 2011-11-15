@@ -38,6 +38,6 @@ public final class JSLintSample implements ActionListener {
 	if (processor == null) {
             processor = new RequestProcessor("TidyErrorCheck", 1, true);
         }
-        processor.post(new JSLintRunnable(context, "-e"));
+        processor.post(new JSLintRunnableB(context, "-e"));
     }
 }

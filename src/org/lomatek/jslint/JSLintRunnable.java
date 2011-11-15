@@ -31,6 +31,7 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
+import org.mozilla.javascript.Undefined;
 
 /**/
 import java.io.InputStreamReader;
@@ -51,6 +52,10 @@ import org.openide.windows.OutputWriter;
 
 import org.openide.cookies.LineCookie;
 import org.openide.loaders.DataObject;
+
+import org.openide.text.Line;
+
+import org.lomatek.jslint.JSLintOptions;
 
 
 //import java.util.concurrent.TimeUnit;
@@ -123,12 +128,10 @@ public class JSLintRunnable implements Runnable {
 	    LineCookie lc = (LineCookie) dataObject.getCookie(LineCookie.class);
 	    EditorCookie edc = (EditorCookie) dataObject.getCookie(EditorCookie.class);
 	    StyledDocument mydoc = edc.getDocument();
+	    //String options_my = JSLintOptions.getInstance().getOptions();
 
 	    writer.println("File: " + file + " - Size: " + file.length() + "...");
-	    writer.println(fileObject.asText());
-
-		writer.println(mydoc.getText(0, mydoc.getLength()));
-
+	    //writer.println(options_my);
 	    /**
 	     * Init ok
 	     */
@@ -136,6 +139,7 @@ public class JSLintRunnable implements Runnable {
 	    jscontext.setLanguageVersion(Context.VERSION_1_6);
 	    scope = jscontext.initStandardObjects();
 
+	    //Read and evaluate JSLint
 	    Reader reader = new BufferedReader(new InputStreamReader(getClass().getClassLoader()
 		.getResourceAsStream("org/lomatek/jslint/resources/jslint.js"), Charset.forName("UTF-8")));
 	    jscontext.evaluateReader(scope, reader, "JSLint", 1, null);
@@ -153,11 +157,29 @@ public class JSLintRunnable implements Runnable {
 		NativeObject error = (NativeObject) errors.get(i, null);
 		if (null == error)
 		    continue;
-		Number lineNo = (Number) error.get("line", null);
-		Number columNo = (Number) error.get("character", null); 
+		Number lineNumber = (Number) error.get("line", null);
+		Number columnNumber = (Number) error.get("character", null); 
 		Object reason = error.get("reason", null);
-		writer.println("Error: " + reason + lineNo.intValue() +':'+columNo.intValue());
-		JSLintAnnotation.createAnnotation(lc, reason.toString(), lineNo.intValue(), columNo.intValue());
+		//Определям длину
+		Object a = (Object) error.get("a", null);
+		Object b = (Object) error.get("b", null);
+		//if (a != "undefined") 
+		//if ("undefined" != a && "undefined" == b)
+		//Line line = lc.getLineSet().getOriginal(lineNumber.intValue()-1);
+		Line line = lc.getLineSet().getCurrent(lineNumber.intValue()-1);
+		Line.Part partLine = null;
+		if (!(a instanceof Undefined) && !"(space)".equals(a.toString()) && b instanceof Undefined) {
+		    /*Line line = lc.getLineSet().getOriginal(lineNumber.intValue()-1);
+		    Line.Part partLine = null; //lc.getLineSet().getOriginal(lineNumber -1 );*/
+		    partLine = line.createPart(columnNumber.intValue()-1, a.toString().length());
+		    //writer.println("Select: " + a.toString());
+		} else {
+		    partLine = line.createPart(columnNumber.intValue()-1, 1);
+		}
+		
+		
+		writer.println("Error: " + reason + lineNumber.intValue() +':'+columnNumber.intValue());
+		JSLintAnnotation.createAnnotation(partLine, reason.toString(), lineNumber.intValue(), columnNumber.intValue());
 	    }
 	    /**
 	     * Loaded ok

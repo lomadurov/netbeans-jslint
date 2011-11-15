@@ -84,8 +84,25 @@ public class JSLintAnnotation extends Annotation {
 	    //final Line.Part w = lc.getLineSet().
 	    
             final JSLintAnnotation annotation = JSLintAnnotation.create(severity, columnNumber, reason);
-
+	    
             annotation.attach(partLine);
+	    
+	    //annotation.
+	    annotation.addPropertyChangeListener(new PropertyChangeListener() {
+		
+		@Override
+		public void propertyChange(PropertyChangeEvent ev) {
+                    String type = ev.getPropertyName();
+                    if (type == null || type.equals(Annotatable.PROP_TEXT)) {
+			partLine.getLine().show(Line.ShowOpenType.NONE, Line.ShowVisibilityType.FOCUS, columnNumber - 1);
+                        /*// User edited the line, assume error should be cleared.
+                        partLine.removePropertyChangeListener(this);
+                        annotation.detach();
+                        JSLintAnnotation.remove(annotation);*/
+                    }
+                }
+	    });
+	    
             partLine.addPropertyChangeListener(new PropertyChangeListener() {
 
                 public void propertyChange(PropertyChangeEvent ev) {

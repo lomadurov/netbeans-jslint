@@ -7,4 +7,29 @@
 	    <file name="org-lomatek-jslint-JSLintErrorAnnotation.xml" url="JSLintErrorAnnotation.xml"/>
         </folder>
     </folder>
+    <folder name="TaskList">
+	<folder name="Groups">
+	    <file name="logging.instance">
+		<attr name="instanceCreate" methodvalue="org.netbeans.spi.tasklist.Task.createGroup"/>
+		
+		<attr name="localizingBundle" stringvalue="org.lomatek.jslint.Bundle"/>
+		<attr name="groupName" stringvalue="logging-tasklist"/>
+		<attr name="diplayNameKey" stringvalue="LBL_loggroup"/>
+		<attr name="descriptionKey" stringvalue="HINT_loggroup"/>
+		<attr name="iconKey" stringvalue="ICON_logging"/>
+		<attr name="position" intvalue="400"/>
+	    </file>
+	</folder>
+	<folder name="Scanners">
+	    <file name="JSLintTaskScanner.instance">
+		<attr name="instanceOf" stringvalue="org.netbeans.spi.tasklist.FileTaskScanner"/>
+		<attr name="instanceCreate" methodvalue="org.lomatek.jslint.JSLintTaskScanner.create"/>
+	    </file>
+	    <!--folder name="Ruby">
+                <file name="TodoScanner.shadow">
+                    <attr name="originalFile" stringvalue="TaskList/Scanners/TodoScanner.instance"/>
+                </file>
+            </folder-->
+	</folder>
+    </folder>
 </filesystem>

@@ -22,7 +22,7 @@ id = "org.lomatek.jslint.JSLintSample")
 @ActionReferences({
     @ActionReference(path = "Editors/text/javascript/Popup", position = 300)
 })
-@Messages("CTL_JSLintSample=JSLintSample")
+//@Messages("CTL_JSLintSample=JSLintSample")
 public final class JSLintSample implements ActionListener {
     
     static RequestProcessor processor = null;

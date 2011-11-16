@@ -27,31 +27,37 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.netbeans.spi.tasklist.FileTaskScanner;
-import org.netbeans.spi.tasklist.PushTaskScanner;
-import org.netbeans.spi.tasklist.Task;
-import org.netbeans.spi.tasklist.TaskScanningScope;
-import org.openide.filesystems.FileObject;
-import org.openide.util.Exceptions;
+
+//import java.util.regex.Matcher;
+//import org.netbeans.spi.tasklist.PushTaskScanner;
+//import org.netbeans.spi.tasklist.Task;
+//import org.netbeans.spi.tasklist.TaskScanningScope;
+//import org.openide.filesystems.FileObject;
+//import org.openide.util.Exceptions;
+//import org.openide.util.NbPreferences;
+//import org.openide.cookies.LineCookie;
+//import org.openide.cookies.EditorCookie;
+//import org.openide.text.Line;
+//import javax.swing.text.StyledDocument;
+//import org.openide.loaders.DataObject;
+//import org.mozilla.javascript.Undefined;
 
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
-
-import org.openide.util.NbPreferences;
-
 import java.util.logging.Logger;
-
-import org.openide.cookies.LineCookie;
-import org.openide.cookies.EditorCookie;
-import org.openide.text.Line;
-import javax.swing.text.StyledDocument;
-import org.openide.loaders.DataObject;
 
 import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
-import org.mozilla.javascript.Undefined;
+
+import org.openide.cookies.EditorCookie;
+//import org.openide.filesystems.FileObject;
+import org.openide.loaders.DataObject;
+import org.openide.util.Lookup;
+
+import org.openide.text.Line;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -84,17 +90,22 @@ public class JSLintTaskScanner extends FileTaskScanner {
     @Override
     public List<? extends Task> scan(FileObject file) {
 	//List<Task> tasks = new LinkedList<Task>();
+	// Если файл не JavaScript игнорируем его
 	if ( ! "text/javascript".equals(file.getMIMEType()))
-	return null;// List<Task>.emtemptyList();
+	    return null;// List<Task>.emtemptyList();
+	
 	List<Task> tasks = new ArrayList<Task>();
 	try {
 	    String text = getContent(file);
-	    //file.
 	    
-	    Logger.getLogger( getClass().getName() ).log( Level.INFO, null);
-	    //Logger.getAnonymousLogger().log(Level.WARNING, "Task start");
-	    /*Task task = Task.create(file, GROUP_NAME, "Test Task", 4);
-	    tasks.add(task);*/
+	    /* Ишем наш редактор */
+	    DataObject dObj = DataObject.find(file);
+	    if (null != dObj) {
+		EditorCookie cEditor = (EditorCookie) dObj.getCookie(EditorCookie.class);
+		StyledDocument currentDocument = cEditor.getDocument();
+		//Проверочная вставка в документ строки
+		currentDocument.insertString(0, "Hello", null);
+	    }
 	    NativeArray errors = JSLint.getInstance().run(text);
 	    /* Чистим анотацию*/
 	    JSLintAnnotation.clear();
@@ -157,6 +168,7 @@ public class JSLintTaskScanner extends FileTaskScanner {
 	return regexp;
     }
 
+    @Override
     public void attach(Callback callback) {
 	if (callback == null && this.callback != null) {
 	    regexp = null;

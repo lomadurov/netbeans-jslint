@@ -6,7 +6,7 @@
       description_key="JSLintErrorLabel"
       localizing_bundle="org.lomatek.jslint.resources.Bundle"
       visible="true"
-      glyph="nbresloc:/org/lomatek/jslint/resources/JSLintError.png"
+      glyph="nbresloc:/org/lomatek/jslint/resources/error.png"
       priority="50"
       type="linepart"
       browseable="true"

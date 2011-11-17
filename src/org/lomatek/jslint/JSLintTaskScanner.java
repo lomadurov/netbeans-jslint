@@ -52,6 +52,7 @@ import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.NativeObject;
 
 import org.openide.cookies.EditorCookie;
+import org.openide.cookies.LineCookie;
 //import org.openide.filesystems.FileObject;
 import org.openide.loaders.DataObject;
 import org.openide.util.Lookup;
@@ -66,11 +67,6 @@ import javax.swing.text.StyledDocument;
 public class JSLintTaskScanner extends FileTaskScanner {
 
     private static final String GROUP_NAME = "logging-tasklist";
-    private static final String[] TOKENS = {
-	"System.out.println",
-	"System.err.println",
-	"printStackTrace"};
-    private Pattern regexp = null;
     private Callback callback = null;
 
     public JSLintTaskScanner(String name, String desc) {
@@ -78,18 +74,13 @@ public class JSLintTaskScanner extends FileTaskScanner {
     }
 
     public static JSLintTaskScanner create() {
-	/*String name = org.openide.util.NbBundle.getBundle(JSLintTaskScanner.class).
-	getString("LBL_loggingtask");
-	String desc = NbBundle.getBundle(JSLintTaskScanner.class).
-	getString("HINT_loggingtask");*/
-	String name = "JSLint";
-	String desc = "JSLint";
+	String name = org.openide.util.NbBundle.getBundle(JSLintTaskScanner.class).getString("LBL_task");
+	String desc = org.openide.util.NbBundle.getBundle(JSLintTaskScanner.class).getString("DESC_task");
 	return new JSLintTaskScanner(name, desc);
     }
 
     @Override
     public List<? extends Task> scan(FileObject file) {
-	//List<Task> tasks = new LinkedList<Task>();
 	// Если файл не JavaScript игнорируем его
 	if ( ! "text/javascript".equals(file.getMIMEType()))
 	    return null;// List<Task>.emtemptyList();
@@ -100,89 +91,38 @@ public class JSLintTaskScanner extends FileTaskScanner {
 	    
 	    /* Ишем наш редактор */
 	    DataObject dObj = DataObject.find(file);
+	    LineCookie cLine = null;
+	    StyledDocument currentDocument = null;
+	    List<JSLintIssue> errors = JSLintRun.getInstance().run(text);
 	    if (null != dObj) {
 		EditorCookie cEditor = (EditorCookie) dObj.getCookie(EditorCookie.class);
-		StyledDocument currentDocument = cEditor.getDocument();
-		//Проверочная вставка в документ строки
-		currentDocument.insertString(0, "Hello", null);
+		cLine = (LineCookie) dObj.getCookie(LineCookie.class);
+		currentDocument = cEditor.getDocument();
+		//Чистим аннотацию
+		JSLintIssueAnnotation.clear(dObj);
 	    }
-	    NativeArray errors = JSLint.getInstance().run(text);
-	    /* Чистим анотацию*/
-	    JSLintAnnotation.clear();
-	    /**/
-	    for (int i = 0; i < errors.getLength(); i++) {
-		NativeObject error = (NativeObject) errors.get(i, null);
-		if (null == error)
-		    continue;
-		Number lineNumber = (Number) error.get("line", null);
-		Number columnNumber = (Number) error.get("character", null); 
-		Object reason = error.get("reason", null);
-		Task task = Task.create(file, GROUP_NAME, reason.toString(), lineNumber.intValue());
-		tasks.add(task);
-		/*//Определям длину выделения
-		Object a = (Object) error.get("a", null);
-		Object b = (Object) error.get("b", null);
-		Line line = lc.getLineSet().getCurrent(lineNumber.intValue()-1);
-		Line.Part partLine = null;
-		if (!(a instanceof Undefined) && !"(space)".equals(a.toString()) && b instanceof Undefined) {
-		    partLine = line.createPart(columnNumber.intValue()-1, a.toString().length());
-		} else {
-		    partLine = line.createPart(columnNumber.intValue()-1, 1);
+	    
+	    for (JSLintIssue issue : errors) {
+		if (null != currentDocument) {
+		    JSLintIssueAnnotation.createAnnotation(dObj, cLine, issue.getReason(), issue.getLine(), issue.getCharacter(), issue.getLength());
 		}
-		//Выводим ошибку
-		writer.println("Error: " + reason + lineNumber.intValue() +':'+columnNumber.intValue());
-		JSLintAnnotation.createAnnotation(partLine, reason.toString(), lineNumber.intValue(), columnNumber.intValue());*/
-	    }
-	    
-	    
-	    /*int index = 0;
-	    int lineno = 1;
-	    int len = text.length();
-	    Matcher matcher = getScanRegexp().matcher(text);
-	    while (index < len && matcher.find(index)) {
-		int begin = matcher.start();
-		int end = matcher.end();
-		
-		...
-            String description = text.subSequence(begin, nonwhite + 1).toString();
-		Task task = Task.create(file, GROUP_NAME, description, lineno);
+		//Создаём задание
+		Task task = Task.create(file, GROUP_NAME, issue.getReason(), issue.getLine());
 		tasks.add(task);
-	    }*/
+	    }
 	} catch (Exception e) {
-	    //Logger.getLogger(getClass().getName()).info(e);
+	    Logger.getLogger(getClass().getName()).log(Level.WARNING, null, e);
 	}
 	return tasks;
     }
 
     private String getContent(FileObject file) throws IOException {
-	// extract the content from the file
-	//LineCookie lc = (LineCookie) file.getCookie(LineCookie.class);
-	//return null;
-	return file.asText();
+	//TODO: Add encoding
+	return file.asText("UTF-8");
     }
-
-    private Pattern getScanRegexp() {
-	if (regexp == null) {
-	    // create pattern for the tokens
-	}
-	return regexp;
-    }
-
+    
     @Override
     public void attach(Callback callback) {
-	if (callback == null && this.callback != null) {
-	    regexp = null;
-	}
 	this.callback = callback;
-    }
-
-    @Override
-    public void notifyPrepare() {
-	getScanRegexp();
-    }
-
-    @Override
-    public void notifyFinish() {
-	regexp = null;
     }
 }

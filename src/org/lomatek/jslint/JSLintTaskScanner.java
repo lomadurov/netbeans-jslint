@@ -1,7 +1,7 @@
 /*
  *  The MIT License
  * 
- *  Copyright (c) 2010 Radek Ježdík <redhead@email.cz>, Ondřej Brejla <ondrej@brejla.cz>
+ *  Copyright (c) 2011 by Stanislav Lomadurov <lord.rojer@gmail.com>
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -27,42 +27,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
+import java.util.Collections;
+import java.util.logging.Logger;
 import org.netbeans.spi.tasklist.FileTaskScanner;
-
-//import java.util.regex.Matcher;
-//import org.netbeans.spi.tasklist.PushTaskScanner;
-//import org.netbeans.spi.tasklist.Task;
-//import org.netbeans.spi.tasklist.TaskScanningScope;
-//import org.openide.filesystems.FileObject;
-//import org.openide.util.Exceptions;
-//import org.openide.util.NbPreferences;
-//import org.openide.cookies.LineCookie;
-//import org.openide.cookies.EditorCookie;
-//import org.openide.text.Line;
-//import javax.swing.text.StyledDocument;
-//import org.openide.loaders.DataObject;
-//import org.mozilla.javascript.Undefined;
-
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
-import java.util.logging.Logger;
-
-import org.mozilla.javascript.NativeArray;
-import org.mozilla.javascript.NativeObject;
-
 import org.openide.cookies.EditorCookie;
 import org.openide.cookies.LineCookie;
-//import org.openide.filesystems.FileObject;
 import org.openide.loaders.DataObject;
-import org.openide.util.Lookup;
-
-import org.openide.text.Line;
 import javax.swing.text.StyledDocument;
+
+
+//import org.netbeans.api.project.FileOwnerQuery;
+//import org.netbeans.api.project.Project;
 
 /**
  *
- * @author Radek Ježdík
+ * @author Stanislav Lomadurov 
  */
 public class JSLintTaskScanner extends FileTaskScanner {
 
@@ -83,8 +64,8 @@ public class JSLintTaskScanner extends FileTaskScanner {
     public List<? extends Task> scan(FileObject file) {
 	// Если файл не JavaScript игнорируем его
 	if ( ! "text/javascript".equals(file.getMIMEType()))
-	    return null;// List<Task>.emtemptyList();
-	
+	    return Collections.<Task>emptyList();
+
 	List<Task> tasks = new ArrayList<Task>();
 	try {
 	    String text = getContent(file);
@@ -101,7 +82,8 @@ public class JSLintTaskScanner extends FileTaskScanner {
 		//Чистим аннотацию
 		JSLintIssueAnnotation.clear(dObj);
 	    }
-	    
+	    if (errors.isEmpty())
+		return Collections.<Task>emptyList();
 	    for (JSLintIssue issue : errors) {
 		if (null != currentDocument) {
 		    JSLintIssueAnnotation.createAnnotation(dObj, cLine, issue.getReason(), issue.getLine(), issue.getCharacter(), issue.getLength());

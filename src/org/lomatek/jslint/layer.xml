@@ -2,10 +2,13 @@
 <!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.2//EN" "http://www.netbeans.org/dtds/filesystem-1_2.dtd">
 <filesystem>
     <folder name="Editors">
-        <folder name="AnnotationTypes">
-            <!--file name="org-lomatek-jslint-resources-JSLintErrorAnnotation.xml" url="JSLintErrorAnnotation.xml"/-->
+	<folder name="text">
+	    <folder name="javascript"/>	
+	</folder>
+	
+	<folder name="AnnotationTypes">
 	    <file name="org-lomatek-jslint-JSLintErrorAnnotation.xml" url="JSLintErrorAnnotation.xml"/>
-        </folder>
+	</folder>
     </folder>
     <folder name="TaskList">
 	<folder name="Groups">
@@ -25,11 +28,6 @@
 		<attr name="instanceOf" stringvalue="org.netbeans.spi.tasklist.FileTaskScanner"/>
 		<attr name="instanceCreate" methodvalue="org.lomatek.jslint.JSLintTaskScanner.create"/>
 	    </file>
-	    <!--folder name="Ruby">
-                <file name="TodoScanner.shadow">
-                    <attr name="originalFile" stringvalue="TaskList/Scanners/TodoScanner.instance"/>
-                </file>
-            </folder-->
 	</folder>
     </folder>
 </filesystem>

@@ -1,25 +1,34 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  The MIT License
+ * 
+ *  Copyright (c) 2011 by Stanislav Lomadurov <lord.rojer@gmail.com>
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
  */
 package org.lomatek.jslint;
 
-//import org.netbeans.modules.php.api.util.UiUtils;
 import org.openide.util.NbPreferences;
-import java.lang.Object;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.NativeArray;
-
-import java.util.Iterator;
-import java.util.Map;
 /**
  *
- * @author LORD
+ * @author Stanislav Lomadurov <lord.rojer@gmail.com>
  */
 public class JSLintOptions {
     
@@ -34,7 +43,6 @@ public class JSLintOptions {
 	"evil", "white", "passfail", "forin", "css", "newcap", "cap", "safe", 
 	"nomen", "on", "adsafe", "plusplus", "fragment"};
     private static String directive = null;
-    //private static Map options = null;
     private static Scriptable options = null;
     
     public static JSLintOptions getInstance() {
@@ -59,22 +67,6 @@ public class JSLintOptions {
     public void setOption(String key, int value) {
 	NbPreferences.forModule(JSLintOptions.class).putInt(key, value);
     }
-    /*public Map getOptions() {
-	if (null != options)
-	    return options;
-	return setOptions();
-    }
-    public Map setOptions() {
-	options = new HashMap();
-	for (String key : OPTIONS) {
-	    options.put(key, getOption(key));
-	}
-	if (0 != getOption("maxlen", 0 ))
-	    options.put("maxlen", getOption("maxlen", 0 ));
-	options.put("maxerr", getOption("maxerr", 50 ));
-	options.put("indent", getOption("indent", 4 ));
-	return options;
-    }*/
     public Scriptable getOptions(Context context, Scriptable scope){
 	if (null != options)
 	    return options;
@@ -86,12 +78,6 @@ public class JSLintOptions {
 	    options.put("maxlen", options, getOption("maxlen", 0 ));
 	options.put("maxerr", options, getOption("maxerr", 50 ));
 	options.put("indent", options, getOption("indent", 4 ));
-	/*Iterator it = options.entrySet().iterator();
-	while (it.hasNext()) {
-	    Map.Entry pairs = (Map.Entry)it.next();
-	    opts.put((String) pairs.getKey(), opts, (Object)pairs.getValue());
-	    //System.out.println(pairs.getKey() + " = " + pairs.getValue());
-	}*/
 	return options;
     }
     public void removeOptions() {

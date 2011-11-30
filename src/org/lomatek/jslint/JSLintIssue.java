@@ -40,7 +40,7 @@ public class JSLintIssue {
     
     public JSLintIssue(Scriptable error) {
 	line = ((Number) error.get("line", null)).intValue();
-	character = (int) ((Number) error.get("character", null)).intValue();
+	character = ((Number) error.get("character", null)).intValue();
 	reason = objectToString("reason", error);
 	a = objectToString("a", error);
 	b = objectToString("b", error);
@@ -51,6 +51,10 @@ public class JSLintIssue {
 	}
     }
     
+    /**
+     * Convert Rhino object to string
+     * @return String
+     */
     private String objectToString(String name, Scriptable scope) {
 	Object obj = scope.get(name, scope);
         return obj instanceof String ? (String) obj : null;

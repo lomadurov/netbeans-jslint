@@ -79,10 +79,10 @@ final public class JSLintRun {
 	    if (null == error) {
 		continue;
 	    }
-	    //Добавляем ошибку в результат
+	    // Добавляем ошибку в результат
 	    result.add(new JSLintIssue(error));
 	}
-	return result;//(NativeArray) lint.get("errors", null);
+	return result;
     }
 
     public void init() {

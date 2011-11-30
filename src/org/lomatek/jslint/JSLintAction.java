@@ -53,7 +53,7 @@ public final class JSLintAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ev) {
-	// TODO use context
+	// Start JSLintRunnable
 	if (processor == null) {
             processor = new RequestProcessor("JSLintErrorCheck", 1, true);
         }

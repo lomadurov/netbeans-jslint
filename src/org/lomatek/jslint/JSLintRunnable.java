@@ -29,9 +29,9 @@ import org.openide.filesystems.FileUtil;
 
 import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
-import org.openide.windows.IOProvider;
+/*import org.openide.windows.IOProvider;
 import org.openide.windows.InputOutput;
-import org.openide.windows.OutputWriter;
+import org.openide.windows.OutputWriter;*/
 import org.openide.cookies.LineCookie;
 import org.openide.loaders.DataObject;
 
@@ -52,19 +52,18 @@ public class JSLintRunnable implements Runnable {
     @Override
     public void run() {
 	try {
-	    InputOutput io = IOProvider.getDefault().getIO("JSLint sample II", false);
-	    //io.select(); //Tree tab is selected
+	    /*InputOutput io = IOProvider.getDefault().getIO("JSLint sample II", false);
 	    OutputWriter writer = io.getOut();
 	    //Clear Output
-	    writer.reset();
+	    writer.reset();*/
 	    
 	    /**
 	     * Init standart object
 	     */
 	    FileObject fileObject = nodeData.getPrimaryFile();
 	    File file = FileUtil.toFile(fileObject);
-	    LineCookie lc = (LineCookie) nodeData.getCookie(LineCookie.class);
-	    EditorCookie edc = (EditorCookie) nodeData.getCookie(EditorCookie.class);
+	    LineCookie lc = nodeData.getCookie(LineCookie.class);
+	    EditorCookie edc = nodeData.getCookie(EditorCookie.class);
 	    StyledDocument mydoc = edc.getDocument();
 	    
 	    /**/
@@ -73,34 +72,7 @@ public class JSLintRunnable implements Runnable {
 	    for (JSLintIssue issue : errors) {
 		JSLintIssueAnnotation.createAnnotation(nodeData, lc, issue.getReason(), issue.getLine(), issue.getCharacter(), issue.getLength());
 	    }
-	    /*
-	    NativeArray errors = JSLint.getInstance().run(mydoc.getText(0, mydoc.getLength()));
-	    // Чистим анотацию
-	    JSLintAnnotation.clear();
-	    
-	    for (int i = 0; i < errors.getLength(); i++) {
-		NativeObject error = (NativeObject) errors.get(i, null);
-		if (null == error)
-		    continue;
-		Number lineNumber = (Number) error.get("line", null);
-		Number columnNumber = (Number) error.get("character", null); 
-		Object reason = error.get("reason", null);
-		//Определям длину выделения
-		Object a = (Object) error.get("a", null);
-		Object b = (Object) error.get("b", null);
-		Line line = lc.getLineSet().getCurrent(lineNumber.intValue()-1);
-		Line.Part partLine = null;
-		if (!(a instanceof Undefined) && !"(space)".equals(a.toString()) && b instanceof Undefined) {
-		    partLine = line.createPart(columnNumber.intValue()-1, a.toString().length());
-		} else {
-		    partLine = line.createPart(columnNumber.intValue()-1, 1);
-		}
-		//Выводим ошибку
-		writer.println("Error: " + reason + lineNumber.intValue() +':'+columnNumber.intValue());
-		JSLintAnnotation.createAnnotation(partLine, reason.toString(), lineNumber.intValue(), columnNumber.intValue());
-	    }*/
-	    
-	    writer.close();
+	    /*writer.close();*/
 	} catch (Exception ex) {
             ErrorManager.getDefault().notify(ErrorManager.WARNING, ex);
         }

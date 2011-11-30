@@ -37,10 +37,6 @@ import org.openide.cookies.LineCookie;
 import org.openide.loaders.DataObject;
 import javax.swing.text.StyledDocument;
 
-
-//import org.netbeans.api.project.FileOwnerQuery;
-//import org.netbeans.api.project.Project;
-
 /**
  *
  * @author Stanislav Lomadurov 
@@ -76,8 +72,8 @@ public class JSLintTaskScanner extends FileTaskScanner {
 	    StyledDocument currentDocument = null;
 	    List<JSLintIssue> errors = JSLintRun.getInstance().run(text);
 	    if (null != dObj) {
-		EditorCookie cEditor = (EditorCookie) dObj.getCookie(EditorCookie.class);
-		cLine = (LineCookie) dObj.getCookie(LineCookie.class);
+		EditorCookie cEditor = dObj.getCookie(EditorCookie.class);
+		cLine = dObj.getCookie(LineCookie.class);
 		currentDocument = cEditor.getDocument();
 		//Чистим аннотацию
 		JSLintIssueAnnotation.clear(dObj);

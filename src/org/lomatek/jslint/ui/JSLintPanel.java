@@ -77,9 +77,8 @@ final class JSLintPanel extends javax.swing.JPanel {
         on = new javax.swing.JCheckBox();
         fragment = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jUnselectAll = new javax.swing.JButton();
+        jSelectAll = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         indent = new javax.swing.JTextField();
         maxlen = new javax.swing.JTextField();
@@ -158,11 +157,19 @@ final class JSLintPanel extends javax.swing.JPanel {
         org.openide.awt.Mnemonics.setLocalizedText(fragment, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.fragment.text")); // NOI18N
         fragment.setToolTipText(org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.fragment.toolTipText")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jButton1.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jUnselectAll, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jUnselectAll.text")); // NOI18N
+        jUnselectAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUnselectAllActionPerformed(evt);
+            }
+        });
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jButton2.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(jButton3, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jButton3.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jSelectAll, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jSelectAll.text")); // NOI18N
+        jSelectAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jSelectAllActionPerformed(evt);
+            }
+        });
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jLabel1.text")); // NOI18N
 
@@ -195,11 +202,9 @@ final class JSLintPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(jUnselectAll)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3))
+                        .addComponent(jSelectAll))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(maxerr, javax.swing.GroupLayout.Alignment.LEADING)
@@ -326,9 +331,8 @@ final class JSLintPanel extends javax.swing.JPanel {
                         .addComponent(plusplus)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jUnselectAll)
+                    .addComponent(jSelectAll))
                 .addGap(16, 16, 16)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -354,6 +358,74 @@ final class JSLintPanel extends javax.swing.JPanel {
     private void indentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_indentActionPerformed
 	// TODO add your handling code here:
     }//GEN-LAST:event_indentActionPerformed
+
+    private void jUnselectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUnselectAllActionPerformed
+	devel.setSelected(false);
+	bitwise.setSelected(false);
+	regexp.setSelected(false);
+	browser.setSelected(false);
+	confusion.setSelected(false);
+	undef.setSelected(false);
+	node.setSelected(false);
+	tContinue.setSelected(false);
+	unparam.setSelected(false);
+	rhino.setSelected(false);
+	debug.setSelected(false);
+	sloppy.setSelected(false);
+	widget.setSelected(false);
+	eqeq.setSelected(false);
+	sub.setSelected(false);
+	windows.setSelected(false);
+	es5.setSelected(false);
+	vars.setSelected(false);
+	evil.setSelected(false);
+	white.setSelected(false);
+	passfail.setSelected(false);
+	forin.setSelected(false);
+	css.setSelected(false);
+	newcap.setSelected(false);
+	cap.setSelected(false);
+	safe.setSelected(false);
+	nomen.setSelected(false);
+	on.setSelected(false);
+	adsafe.setSelected(false);
+	plusplus.setSelected(false);
+	fragment.setSelected(false);
+    }//GEN-LAST:event_jUnselectAllActionPerformed
+
+    private void jSelectAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSelectAllActionPerformed
+	devel.setSelected(true);
+	bitwise.setSelected(true);
+	regexp.setSelected(true);
+	browser.setSelected(true);
+	confusion.setSelected(true);
+	undef.setSelected(true);
+	node.setSelected(true);
+	tContinue.setSelected(true);
+	unparam.setSelected(true);
+	rhino.setSelected(true);
+	debug.setSelected(true);
+	sloppy.setSelected(true);
+	widget.setSelected(true);
+	eqeq.setSelected(true);
+	sub.setSelected(true);
+	windows.setSelected(true);
+	es5.setSelected(true);
+	vars.setSelected(true);
+	evil.setSelected(true);
+	white.setSelected(true);
+	passfail.setSelected(true);
+	forin.setSelected(true);
+	css.setSelected(true);
+	newcap.setSelected(true);
+	cap.setSelected(true);
+	safe.setSelected(true);
+	nomen.setSelected(true);
+	on.setSelected(true);
+	adsafe.setSelected(true);
+	plusplus.setSelected(true);
+	fragment.setSelected(true);
+    }//GEN-LAST:event_jSelectAllActionPerformed
 
     void load() {
 	devel.setSelected(JSLintOptions.getInstance().getOption("devel"));
@@ -459,16 +531,15 @@ final class JSLintPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox forin;
     private javax.swing.JCheckBox fragment;
     private javax.swing.JTextField indent;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jSelectAll;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton jUnselectAll;
     private javax.swing.JTextField maxerr;
     private javax.swing.JTextField maxlen;
     private javax.swing.JCheckBox newcap;

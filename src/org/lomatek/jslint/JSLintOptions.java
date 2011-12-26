@@ -25,6 +25,7 @@ package org.lomatek.jslint;
 
 import org.openide.util.NbPreferences;
 import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeArray;
 import org.mozilla.javascript.Scriptable;
 /**
  *
@@ -33,9 +34,6 @@ import org.mozilla.javascript.Scriptable;
 public class JSLintOptions {
     
     private static JSLintOptions INSTANCE;
-    
-    private static final String NETTE_LOADER_PATH = "nette-loader-path";
-    private static final String SANDBOX_PATH = "sandbox-path";
     
     private static final String[] OPTIONS = {"devel", "bitwise", "regexp", 
 	"browser", "confusion", "undef", "node", "continue", "unparam", "rhino", 
@@ -55,18 +53,31 @@ public class JSLintOptions {
     
     private JSLintOptions() {}
     
+    // Get option as boolean
     public boolean getOption(String key) {
 	return NbPreferences.forModule(JSLintOptions.class).getBoolean(key, false);
     }
+    // Get option as integer
     public int getOption(String key, int integer) {
 	return NbPreferences.forModule(JSLintOptions.class).getInt(key, integer);
     }
+    // Get option as string
+    public String getOption(String key, String str){
+        return NbPreferences.forModule(JSLintOptions.class).get(key, str);
+    }
+    // Set option as boolean
     public void setOption(String key, boolean value) {
 	NbPreferences.forModule(JSLintOptions.class).putBoolean(key, value);
     }
+    // Set option as integer
     public void setOption(String key, int value) {
 	NbPreferences.forModule(JSLintOptions.class).putInt(key, value);
     }
+    // Set option as string
+    public void setOption(String key, String value) {
+	NbPreferences.forModule(JSLintOptions.class).put(key, value);
+    }
+    // Get the Rhino context contains options for JSLint
     public Scriptable getOptions(Context context, Scriptable scope){
 	if (null != options)
 	    return options;
@@ -74,9 +85,17 @@ public class JSLintOptions {
 	for (String key : OPTIONS) {
 	    options.put(key, options, getOption(key));
 	}
+	// Predefined
+	if ( ! "".equals(getOption("predef", ""))) {
+	    Object[] opts = getOption("predef", "").replaceAll("\\s+", "").split(",");
+	    options.put("predef", options, new NativeArray(opts));
+	}
+	// Maximum line length
 	if (0 != getOption("maxlen", 0 ))
 	    options.put("maxlen", options, getOption("maxlen", 0 ));
+	// Maximum number of errors
 	options.put("maxerr", options, getOption("maxerr", 50 ));
+	// Indentation
 	options.put("indent", options, getOption("indent", 4 ));
 	return options;
     }
@@ -102,7 +121,12 @@ public class JSLintOptions {
 		else
 		    str.append("false, ");
 	    }
-	    if (!"0".equals(getOption("maxlen", 0 )))
+	    if (!"".equals(getOption("predef", ""))) {
+		str.append("predef:[");
+		str.append(getOption("predef", ""));
+		str.append("]");
+	    }
+	    if (0 != getOption("maxlen", 0))
 		str.append("maxlen: ")
 			.append(getOption("maxlen", 0 ))
 			.append(", ");

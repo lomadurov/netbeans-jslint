@@ -86,7 +86,7 @@ final class JSLintPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        preDef = new javax.swing.JTextArea();
         jLabel4 = new javax.swing.JLabel();
 
         org.openide.awt.Mnemonics.setLocalizedText(devel, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.devel.text")); // NOI18N
@@ -188,9 +188,9 @@ final class JSLintPanel extends javax.swing.JPanel {
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jLabel3.text")); // NOI18N
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        preDef.setColumns(20);
+        preDef.setRows(5);
+        jScrollPane1.setViewportView(preDef);
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(JSLintPanel.class, "JSLintPanel.jLabel4.text")); // NOI18N
 
@@ -459,6 +459,7 @@ final class JSLintPanel extends javax.swing.JPanel {
 	adsafe.setSelected(JSLintOptions.getInstance().getOption("adsafe"));
 	plusplus.setSelected(JSLintOptions.getInstance().getOption("plusplus"));
 	fragment.setSelected(JSLintOptions.getInstance().getOption("fragment"));
+	preDef.setText(JSLintOptions.getInstance().getOption("predef", ""));
 	try {
 	    maxerr.setText(Integer.toString(JSLintOptions.getInstance().getOption("maxerr",50)));
 	    indent.setText(Integer.toString(JSLintOptions.getInstance().getOption("indent",4)));
@@ -500,6 +501,7 @@ final class JSLintPanel extends javax.swing.JPanel {
 	JSLintOptions.getInstance().setOption("white", white.isSelected());
 	JSLintOptions.getInstance().setOption("widget", widget.isSelected());
 	JSLintOptions.getInstance().setOption("windows", windows.isSelected());
+	JSLintOptions.getInstance().setOption("predef", preDef.getText());
 	try {
 	    JSLintOptions.getInstance().setOption("maxerr", Integer.parseInt(maxerr.getText()));
 	    JSLintOptions.getInstance().setOption("indent", Integer.parseInt(indent.getText()));
@@ -538,7 +540,6 @@ final class JSLintPanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jSelectAll;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JButton jUnselectAll;
     private javax.swing.JTextField maxerr;
     private javax.swing.JTextField maxlen;
@@ -548,6 +549,7 @@ final class JSLintPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox on;
     private javax.swing.JCheckBox passfail;
     private javax.swing.JCheckBox plusplus;
+    private javax.swing.JTextArea preDef;
     private javax.swing.JCheckBox regexp;
     private javax.swing.JCheckBox rhino;
     private javax.swing.JCheckBox safe;

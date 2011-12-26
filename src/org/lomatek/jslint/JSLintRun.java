@@ -65,13 +65,13 @@ final public class JSLintRun {
     public List<JSLintIssue> run(String contents) {
 	init();
 	scope.put("contents", scope, contents);
-	//Get options
+	// Get options
 	scope.put("opts", scope, JSLintOptions.getInstance().getOptions(context, scope));
 	context.evaluateString(scope, "results = JSLINT(contents, opts);", "JSLint", 1, null);
 	Scriptable lint = (Scriptable) scope.get("JSLINT", scope);
-	//Выходим из контекста
+	// Выходим из контекста
 	context.exit();
-	//Собираем и обрабытываем ошибки
+	// Get JSLint errors
 	NativeArray errors = (NativeArray) lint.get("errors", null);
 	List<JSLintIssue> result = new ArrayList<JSLintIssue>();
 	for (int i = 0; i < errors.getLength(); i++) {
@@ -79,7 +79,7 @@ final public class JSLintRun {
 	    if (null == error) {
 		continue;
 	    }
-	    // Добавляем ошибку в результат
+	    // Add error
 	    result.add(new JSLintIssue(error));
 	}
 	return result;

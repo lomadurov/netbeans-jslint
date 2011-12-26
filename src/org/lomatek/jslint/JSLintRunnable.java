@@ -23,20 +23,9 @@
  */
 package org.lomatek.jslint;
 
-import java.io.File;
 import org.openide.ErrorManager;
-import org.openide.filesystems.FileUtil;
-
-import org.openide.cookies.EditorCookie;
 import org.openide.filesystems.FileObject;
-/*import org.openide.windows.IOProvider;
-import org.openide.windows.InputOutput;
-import org.openide.windows.OutputWriter;*/
-import org.openide.cookies.LineCookie;
 import org.openide.loaders.DataObject;
-
-import java.util.List;
-import javax.swing.text.StyledDocument;
 /**
  *
  * @author Stanislav Lomadurov
@@ -52,27 +41,9 @@ public class JSLintRunnable implements Runnable {
     @Override
     public void run() {
 	try {
-	    /*InputOutput io = IOProvider.getDefault().getIO("JSLint sample II", false);
-	    OutputWriter writer = io.getOut();
-	    //Clear Output
-	    writer.reset();*/
-	    
-	    /**
-	     * Init standart object
-	     */
+	    // Init JSLint TaskScanner
 	    FileObject fileObject = nodeData.getPrimaryFile();
-	    File file = FileUtil.toFile(fileObject);
-	    LineCookie lc = nodeData.getCookie(LineCookie.class);
-	    EditorCookie edc = nodeData.getCookie(EditorCookie.class);
-	    StyledDocument mydoc = edc.getDocument();
-	    
-	    /**/
-	    JSLintIssueAnnotation.clear(nodeData);
-	    List<JSLintIssue> errors = JSLintRun.getInstance().run(mydoc.getText(0, mydoc.getLength()));
-	    for (JSLintIssue issue : errors) {
-		JSLintIssueAnnotation.createAnnotation(nodeData, lc, issue.getReason(), issue.getLine(), issue.getCharacter(), issue.getLength());
-	    }
-	    /*writer.close();*/
+	    JSLintTaskScanner.create().scan(fileObject);
 	} catch (Exception ex) {
             ErrorManager.getDefault().notify(ErrorManager.WARNING, ex);
         }

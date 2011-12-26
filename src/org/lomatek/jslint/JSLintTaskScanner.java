@@ -24,11 +24,13 @@
 package org.lomatek.jslint;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.Collections;
 import java.util.logging.Logger;
+import org.netbeans.api.queries.FileEncodingQuery;
 import org.netbeans.spi.tasklist.FileTaskScanner;
 import org.netbeans.spi.tasklist.Task;
 import org.openide.filesystems.FileObject;
@@ -58,24 +60,34 @@ public class JSLintTaskScanner extends FileTaskScanner {
 
     @Override
     public List<? extends Task> scan(FileObject file) {
-	// Если файл не JavaScript игнорируем его
-	if ( ! "text/javascript".equals(file.getMIMEType()))
+	// Ignore not JS file
+	if ( null == file || file.isFolder() || ! "JS".equals(file.getExt().toUpperCase()))
 	    return Collections.<Task>emptyList();
 
 	List<Task> tasks = new ArrayList<Task>();
 	try {
-	    String text = getContent(file);
+	    String text;
 	    
-	    /* Ишем наш редактор */
+	    // Find editor
 	    DataObject dObj = DataObject.find(file);
 	    LineCookie cLine = null;
 	    StyledDocument currentDocument = null;
-	    List<JSLintIssue> errors = JSLintRun.getInstance().run(text);
 	    if (null != dObj) {
 		EditorCookie cEditor = dObj.getCookie(EditorCookie.class);
 		cLine = dObj.getCookie(LineCookie.class);
 		currentDocument = cEditor.getDocument();
-		//Чистим аннотацию
+		// Get text
+		if (null != currentDocument) {
+		    text = currentDocument.getText(0, currentDocument.getLength());
+		} else {
+		    text = getContent(file);
+		}
+	    } else {
+		text = getContent(file);
+	    }
+	    List<JSLintIssue> errors = JSLintRun.getInstance().run(text);
+	    if (null != dObj) {
+		// Clear annotation list of Editor
 		JSLintIssueAnnotation.clear(dObj);
 	    }
 	    if (errors.isEmpty())
@@ -84,7 +96,7 @@ public class JSLintTaskScanner extends FileTaskScanner {
 		if (null != currentDocument) {
 		    JSLintIssueAnnotation.createAnnotation(dObj, cLine, issue.getReason(), issue.getLine(), issue.getCharacter(), issue.getLength());
 		}
-		//Создаём задание
+		// Create new Task
 		Task task = Task.create(file, GROUP_NAME, issue.getReason(), issue.getLine());
 		tasks.add(task);
 	    }
@@ -95,8 +107,9 @@ public class JSLintTaskScanner extends FileTaskScanner {
     }
 
     private String getContent(FileObject file) throws IOException {
-	//TODO: Add encoding
-	return file.asText("UTF-8");
+	// Set encoding
+	Charset charset = FileEncodingQuery.getEncoding( file );
+	return file.asText(charset.name());
     }
     
     @Override

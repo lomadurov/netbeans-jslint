@@ -20,7 +20,7 @@ import org.openide.text.Line;
 
 /**
  *
- * @author LORD
+ * @author Stanislav Lomadurov <lord.rojer@gmail.com>
  */
 public class JSLintIssueAnnotation extends Annotation {
     //private static List<Annotation> annotations = new ArrayList<Annotation>();

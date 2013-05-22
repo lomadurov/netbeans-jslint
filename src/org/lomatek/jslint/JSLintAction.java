@@ -21,6 +21,10 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  */
+/**
+ *
+ * @author Stanislav Lomadurov <lord.rojer@gmail.com>
+ */
 package org.lomatek.jslint;
 
 import java.awt.event.ActionListener;

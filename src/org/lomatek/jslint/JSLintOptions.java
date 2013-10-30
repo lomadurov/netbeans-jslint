@@ -35,11 +35,11 @@ public class JSLintOptions {
     
     private static JSLintOptions INSTANCE;
     
-    private static final String[] OPTIONS = {"devel", "bitwise", "regexp", 
-	"browser", "confusion", "undef", "node", "continue", "unparam", "rhino", 
-	"debug", "sloppy", "widget", "eqeq", "sub", "windows", "es5", "vars", 
-	"evil", "white", "passfail", "forin", "css", "newcap", "cap", "safe", 
-	"nomen", "on", "adsafe", "plusplus", "fragment"};
+    private static final String[] OPTIONS = {"option", "ass", "bitwise", 
+        "browser", "closure", "continue", "couch", "debug", "devel", "eqeq", 
+        "evil", "forin", "newcap","node", "nomen", "passfail", "plusplus", 
+        "predef", "regexp", "rhino", "sloppy", "stupid", "sub", "todo", 
+        "unparam", "vars", "white"};
     private static String directive = null;
     private static Scriptable options = null;
     

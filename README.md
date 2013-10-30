@@ -4,7 +4,7 @@
 
 License: `The MIT license`
 
-Current support `NetBeans 7.3`
+Current support `NetBeans 7.4`
 
 JSLint is a JavaScript program that looks for problems in JavaScript programs. It is a code quality tool.
 
